@@ -2,7 +2,6 @@
  
   $.fn.tweet = function(o){
     var s = {
-      username: ["seaofclouds"],              // [string]   required, unless you want to display our tweets. :) it can be an array, just do ["username1","username2","etc"]
       avatar_size: null,                      // [integer]  height and width of avatar if displayed (48px max)
       count: 3,                               // [integer]  how many tweets to display?
       intro_text: null,                       // [string]   do you want text BEFORE your your tweets?
@@ -14,7 +13,8 @@
       auto_join_text_reply: "i replied to",   // [string]   auto tense for replies: "i replied to" @someone "with"
       auto_join_text_url: "i was looking at", // [string]   auto tense for urls: "i was looking at" http:...
       loading_text: null,                     // [string]   optional loading text, displayed while tweets load
-      query: null                             // [string]   optional search query
+      query: null,                            // [string]   required search query
+      api_key: null                           // [string]   required api key
     };
 
     $.fn.extend({
@@ -31,14 +31,6 @@
         var regexp = /[\@]+([A-Za-z0-9-_]+)/gi;
         this.each(function() {
           returning.push(this.replace(regexp,"<a href=\"http://twitter.com/$1\">@$1</a>"))
-        });
-        return $(returning);
-      },
-      linkHash: function() {
-        var returning = [];
-        var regexp = / [\#]+([A-Za-z0-9-_]+)/gi;
-        this.each(function() {
-          returning.push(this.replace(regexp, ' <a href="http://search.twitter.com/search?q=&tag=$1&lang=all&from='+s.username.join("%2BOR%2B")+'">#$1</a>'))
         });
         return $(returning);
       },
@@ -87,20 +79,16 @@
     }
 
     if(o) $.extend(s, o);
+    
+    if(!s.api_key) throw('You must provide an API key');
+    if(!s.query) throw('You must provide a query');
+    
     return this.each(function(){
       var list = $('<ul class="tweet_list">').appendTo(this);
       var intro = '<p class="tweet_intro">'+s.intro_text+'</p>'
       var outro = '<p class="tweet_outro">'+s.outro_text+'</p>'
       var loading = $('<p class="loading">'+s.loading_text+'</p>');
-      if(typeof(s.username) == "string"){
-        s.username = [s.username];
-      }
-      var query = '';
-      if(s.query) {
-        query += 'q='+s.query;
-      }
-      query += '&q=from:'+s.username.join('%20OR%20from:');
-      var url = 'http://search.twitter.com/search.json?&'+query+'&rpp='+s.count+'&callback=?';
+      var url = 'http://twitter.socialmod.com/tweets/' + s.api_key  + '.json?&q=' + s.query + '&rpp=' + s.count + '&callback=?';
       if (s.loading_text) $(this).append(loading);
       $.getJSON(url, function(data){
         if (s.loading_text) loading.remove();
@@ -128,7 +116,7 @@
           var avatar_template = '<a class="tweet_avatar" href="http://twitter.com/'+ item.from_user+'"><img src="'+item.profile_image_url+'" height="'+s.avatar_size+'" width="'+s.avatar_size+'" alt="'+item.from_user+'\'s avatar" border="0"/></a>';
           var avatar = (s.avatar_size ? avatar_template : '')
           var date = '<a href="http://twitter.com/'+item.from_user+'/statuses/'+item.id+'" title="view tweet on twitter">'+relative_time(item.created_at)+'</a>';
-          var text = '<span class="tweet_text">' +$([item.text]).linkUrl().linkUser().linkHash().makeHeart().capAwesome().capEpic()[0]+ '</span>';
+          var text = '<span class="tweet_text">' +$([item.text]).linkUrl().linkUser().makeHeart().capAwesome().capEpic()[0]+ '</span>';
           
           // until we create a template option, arrange the items below to alter a tweet's display.
           list.append('<li>' + avatar + date + join + text + '</li>');
