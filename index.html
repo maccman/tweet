@@ -11,7 +11,7 @@
     <script type='text/javascript'>
       jQuery(document).ready(function($) {
         $(".tweet").tweet({
-          api_key: "foo",
+          account_id: "1",
           query: "rails",
           join_text: "auto",
           avatar_size: 48,
@@ -66,7 +66,7 @@
         &nbsp; &nbsp; $(document).ready(function(){<br />
         &nbsp; &nbsp; &nbsp; &nbsp; $(".tweet").tweet({<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; query: "rails",<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; api_key: "foo",<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; account_id: "foo",<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; join_text: "auto",<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; avatar_size: 32,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; count: 3,<br />
@@ -80,6 +80,13 @@
         &nbsp; &nbsp; });<br />
         &lt;/script&gt;
       </code>
+      <p>
+        You can find your account id in the JSON endpoint.
+        If it looks like this then your account id is 1:
+        <code>http://twitter.socialmod.com/tweets/<b>1</b>.json</code>
+      </p>
+        
+      
       <p><strong>4.</strong> In <span class="code">&lt;body&gt;</span>, include a placeholder for your tweets. They'll get loaded in via JSON. How fancy!</p>
       <code>
         &lt;div class=&quot;tweet&quot;&gt;&lt;/div&gt;
