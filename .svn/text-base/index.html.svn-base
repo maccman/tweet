@@ -12,7 +12,7 @@
       jQuery(document).ready(function($) {
         $(".tweet").tweet({
           account_id: "1",
-          query_id:   "44",
+          query: "rails",
           join_text: "auto",
           avatar_size: 48,
           count: 3,
@@ -65,8 +65,8 @@
         &lt;script type=&apos;text/javascript&apos;&gt;<br />
         &nbsp; &nbsp; $(document).ready(function(){<br />
         &nbsp; &nbsp; &nbsp; &nbsp; $(".tweet").tweet({<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; query_id: "2",<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; account_id: "1",<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; query: "rails",<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; account_id: "foo",<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; join_text: "auto",<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; avatar_size: 32,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; count: 3,<br />

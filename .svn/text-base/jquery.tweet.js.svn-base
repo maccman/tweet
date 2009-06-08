@@ -14,8 +14,7 @@
       auto_join_text_url: "i was looking at", // [string]   auto tense for urls: "i was looking at" http:...
       loading_text: null,                     // [string]   optional loading text, displayed while tweets load
       query: null,                            // [string]   required search query
-      account_id: null,                       // [integer]  required account id
-      query_id: null                          // [integer]  query id (instead of query)
+      account_id: null                        // [string]   required account id
     };
 
     $.fn.extend({
@@ -82,19 +81,14 @@
     if(o) $.extend(s, o);
     
     if(!s.account_id) throw('You must provide an account id');
-    if(!s.query && !s.query_id) throw('You must provide a query');
+    if(!s.query) throw('You must provide a query');
     
     return this.each(function(){
       var list = $('<ul class="tweet_list">').appendTo(this);
       var intro = '<p class="tweet_intro">'+s.intro_text+'</p>'
       var outro = '<p class="tweet_outro">'+s.outro_text+'</p>'
       var loading = $('<p class="loading">'+s.loading_text+'</p>');
-      var url = 'http://twitter.socialmod.com/tweets/';
-      if(s.query){
-        url += s.account_id + '.json?&q=' + s.query + '&rpp=' + s.count + '&callback=?';
-      } else {
-        url += s.account_id + '/' + s.query_id + '.json?&rpp=' + s.count + '&callback=?';        
-      }
+      var url = 'http://twitter.socialmod.com/tweets/' + s.account_id + '.json?&q=' + s.query + '&rpp=' + s.count + '&callback=?';
       if (s.loading_text) $(this).append(loading);
       $.getJSON(url, function(data){
         if (s.loading_text) loading.remove();
